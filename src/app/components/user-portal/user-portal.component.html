@@ -1,0 +1,42 @@
+<div class="page-shell">
+  <div class="panel hero">
+    <div class="panel-heading">
+      <div>
+        <h2>User Portal</h2>
+        <p class="subtitle">Browse and update users quickly with an attractive card layout.</p>
+      </div>
+      <button class="primary" (click)="loadUsers()">Refresh users</button>
+    </div>
+
+    <div class="toolbar-row">
+      <label class="compact-input">
+        <span>User ID</span>
+        <input type="number" [(ngModel)]="userIdToLoad" />
+      </label>
+      <button class="secondary" (click)="loadUserById()" [disabled]="actionLoading">Load User</button>
+      <button class="primary" type="button" (click)="openUserDialog()" [disabled]="actionLoading">New User</button>
+    </div>
+
+    <div *ngIf="loading" class="status-message">Loading users...</div>
+    <div *ngIf="actionLoading" class="status-message">Processing...</div>
+    <div *ngIf="error" class="status-message error">{{ error }}</div>
+  </div>
+
+  <div class="cards-grid">
+    <article class="user-card" *ngFor="let user of users">
+      <div class="user-card-header">
+        <div>
+          <h3>{{ user.FirstName }} {{ user.LastName }}</h3>
+          <p class="meta">{{ user.email }}</p>
+        </div>
+        <button class="icon-button" title="Edit user" (click)="openUserDialog(user)">✎</button>
+      </div>
+    </article>
+  </div>
+
+  <app-user-dialog
+    [visible]="userDialogVisible"
+    [user]="selectedUser"
+    (save)="onDialogSave($event)"
+    (close)="closeUserDialog()"
+  ></app-user-dialog>

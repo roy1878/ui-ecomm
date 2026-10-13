@@ -1,0 +1,70 @@
+<div class="page-shell">
+  <div class="panel hero">
+    <div class="panel-heading">
+      <div>
+        <h2>Cart Dashboard</h2>
+        <p class="subtitle">Manage cart items with quick add/remove actions and view items in a clean grid.</p>
+      </div>
+      <button class="primary" (click)="loadCart()">Refresh Cart</button>
+    </div>
+
+    <div class="toolbar-row">
+      <div class="cart-info">
+        <span><strong>User:</strong> {{ userName }}</span>
+        <span><strong>Cart user id:</strong> {{ userId }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="status-message">Loading cart...</div>
+    <div *ngIf="error" class="status-message error">{{ error }}</div>
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <span class="summary-label">Items in cart</span>
+        <strong>{{ itemCount }}</strong>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Total quantity</span>
+        <strong>{{ totalQuantity }}</strong>
+      </div>
+    </div>
+  </div>
+
+  <section class="panel add-panel">
+    <div class="panel-heading">
+      <div>
+        <h3>Cart actions</h3>
+        <p class="subtitle">Review the current cart items and place your order.</p>
+      </div>
+      <button class="primary" type="button" (click)="placeOrder()" [disabled]="placeOrderLoading">
+        {{ placeOrderLoading ? 'Placing Order...' : 'Place Order' }}
+      </button>
+    </div>
+
+    <div *ngIf="successMessage" class="status-message success">{{ successMessage }}</div>
+    <div *ngIf="error" class="status-message error">{{ error }}</div>
+  </section>
+
+  <div class="cards-grid" *ngIf="cartItems.length">
+    <article class="cart-card" *ngFor="let item of cartItems">
+      <img class="cart-image" [src]="item.product?.imgUrl || 'https://via.placeholder.com/180x120?text=No+Image'" alt="{{ item.product?.name }}" />
+      <div class="cart-content">
+        <h3>{{ item.product?.name || 'Product #' + item.productId }}</h3>
+        <p class="meta">{{ item.product?.Category || item.product?.category || 'Category unknown' }}</p>
+        <p class="cart-desc">{{ item.product?.description }}</p>
+        <div class="cart-row">
+          <span>Qty: {{ item.quantity || item.Quantity }}</span>
+          <span>Price: ₹{{ item.product?.price | number:'1.0-2' }}</span>
+        </div>
+        <div class="cart-row">
+          <span class="cart-user">User id: {{ userId }}</span>
+          <span class="cart-price">Total: ₹{{ (item.product?.price || 0) * (item.quantity || item.Quantity || 0) | number:'1.0-2' }}</span>
+        </div>
+      </div>
+      <button class="icon-button remove" title="Remove item" (click)="removeItem(item.productId)" [disabled]="removeLoading[item.productId]">
+        <span *ngIf="removeLoading[item.productId]">...</span>
+        <span *ngIf="!removeLoading[item.productId]">✕</span>
+      </button>
+    </article>
+  </div>
+</div>

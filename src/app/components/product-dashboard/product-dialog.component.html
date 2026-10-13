@@ -1,0 +1,40 @@
+<div class="modal-backdrop" *ngIf="visible">
+  <div class="dialog-card">
+    <div class="dialog-header">
+      <h3>{{ product?.id ? 'Edit Product' : 'New Product' }}</h3>
+      <button class="close" (click)="close.emit()">✕</button>
+    </div>
+
+    <div class="dialog-body">
+      <label>
+        <span>Name</span>
+        <input [(ngModel)]="product!.name" />
+      </label>
+      <label>
+        <span>Category</span>
+        <input [(ngModel)]="product!.category" />
+      </label>
+      <label>
+        <span>Price</span>
+        <input type="number" [(ngModel)]="product!.price" />
+      </label>
+      <label>
+        <span>Stock Quantity</span>
+        <input type="number" [(ngModel)]="product!.stockQuantity" />
+      </label>
+      <label>
+        <span>Image URL</span>
+        <input [(ngModel)]="product!.imgUrl" />
+      </label>
+      <label>
+        <span>Description</span>
+        <textarea [(ngModel)]="product!.description"></textarea>
+      </label>
+    </div>
+
+    <div class="dialog-footer">
+      <button class="secondary" type="button" (click)="close.emit()">Cancel</button>
+      <button class="primary" type="button" (click)="onSave()">Save</button>
+    </div>
+  </div>
+</div>

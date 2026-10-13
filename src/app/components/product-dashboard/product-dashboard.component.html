@@ -1,0 +1,81 @@
+<div class="page-shell">
+  <div class="panel hero">
+    <div class="panel-heading">
+      <div>
+        <h2>Product Dashboard</h2>
+        <p class="subtitle">Browse your inventory, search products, and update listings from a clean card view.</p>
+      </div>
+      <button class="primary" (click)="createProduct()">New Product</button>
+    </div>
+
+    <div class="toolbar-row">
+      <input type="text" placeholder="Search products" [(ngModel)]="searchKeyword" />
+      <button class="secondary" (click)="searchProducts()">Search</button>
+      <button class="secondary" (click)="loadProducts(0)">Reload All</button>
+    </div>
+
+    <div *ngIf="loading" class="status-message">Loading products...</div>
+    <div *ngIf="actionLoading" class="status-message">Processing...</div>
+    <div *ngIf="successMessage" class="status-message success">{{ successMessage }}</div>
+    <div *ngIf="error" class="status-message error">{{ error }}</div>
+  </div>
+
+  <div class="toolbar-row pagination-toolbar" *ngIf="totalPages > 1">
+    <label class="page-size-picker">
+      <span>Items per page</span>
+      <select [(ngModel)]="pageSize" (change)="changePageSize()">
+        <option [ngValue]="4">4</option>
+        <option [ngValue]="8">8</option>
+        <option [ngValue]="12">12</option>
+      </select>
+    </label>
+
+    <div class="pagination-controls">
+      <button class="secondary" [disabled]="currentPage === 0" (click)="changePage(currentPage - 1)">Previous</button>
+      <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+      <button class="secondary" [disabled]="currentPage >= totalPages - 1" (click)="changePage(currentPage + 1)">Next</button>
+    </div>
+  </div>
+
+  <div class="cards-grid">
+    <article class="product-card" *ngFor="let product of products">
+      <img class="product-image" [src]="product.imgUrl || 'https://via.placeholder.com/360x220?text=Product'" alt="{{ product.name }}" />
+
+      <div class="card-content">
+        <div class="card-header">
+          <div>
+            <h3>{{ product.name }}</h3>
+            <p class="meta">{{ product.category }}</p>
+          </div>
+          <button class="icon-button" title="Edit product" (click)="loadProductById(getProductKey(product))">✎</button>
+        </div>
+
+        <p class="product-description">{{ product.description }}</p>
+
+        <div class="product-footer">
+          <span class="price">₹{{ product.price | number:'1.0-2' }}</span>
+          <span class="stock">Stock: {{ product.stockQuantity }}</span>
+        </div>
+
+        <label class="quantity-input">
+          <span>Qty</span>
+          <input type="number" min="1" [(ngModel)]="quantityToAdd[getProductKey(product)]" />
+        </label>
+
+        <button class="primary add-cart" type="button"
+          (click)="addToCart(product)"
+          [disabled]="addToCartLoading[getProductKey(product)]">
+          <span *ngIf="addToCartLoading[getProductKey(product)]">Adding...</span>
+          <span *ngIf="!addToCartLoading[getProductKey(product)]">Add to Cart</span>
+        </button>
+      </div>
+    </article>
+  </div>
+
+  <app-product-dialog
+    [visible]="productDialogVisible"
+    [product]="selectedProduct"
+    (save)="onDialogSave($event)"
+    (close)="closeDialog()"
+  ></app-product-dialog>
+</div>

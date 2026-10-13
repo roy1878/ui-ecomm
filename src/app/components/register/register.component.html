@@ -1,0 +1,80 @@
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="brand-panel">
+      <span class="brand-badge">Create account</span>
+      <h1>Join the shop</h1>
+      <p>Register to unlock personalized offers, faster checkout, and a smoother shopping experience.</p>
+      <ul class="feature-list">
+        <li>Track your orders</li>
+        <li>Save your cart</li>
+        <li>Enjoy member benefits</li>
+      </ul>
+    </div>
+
+    <form class="auth-form" (ngSubmit)="register()">
+      <div class="form-header">
+        <h2>Register</h2>
+        <p>Create your account in a few easy steps.</p>
+      </div>
+
+      <div class="name-row">
+        <label>
+          <span>First Name</span>
+          <input type="text" [(ngModel)]="firstName" name="firstName" placeholder="Enter first name" />
+        </label>
+
+        <label>
+          <span>Last Name</span>
+          <input type="text" [(ngModel)]="lastName" name="lastName" placeholder="Enter last name" />
+        </label>
+      </div>
+
+      <label>
+        <span>Email</span>
+        <input type="email" [(ngModel)]="email" name="email" placeholder="Enter your email" />
+      </label>
+
+      <div class="address-grid">
+        <label>
+          <span>City</span>
+          <input type="text" [(ngModel)]="city" name="city" placeholder="City" />
+        </label>
+
+        <label>
+          <span>State</span>
+          <input type="text" [(ngModel)]="state" name="state" placeholder="State" />
+        </label>
+
+        <label>
+          <span>Pincode</span>
+          <input type="text" [(ngModel)]="pincode" name="pincode" placeholder="Pincode" />
+        </label>
+
+        <label>
+          <span>Country</span>
+          <input type="text" [(ngModel)]="country" name="country" placeholder="Country" />
+        </label>
+      </div>
+
+      <label>
+        <span>Username</span>
+        <input type="text" [(ngModel)]="username" name="username" placeholder="Choose a username" />
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input type="password" [(ngModel)]="password" name="password" placeholder="Create a password" />
+      </label>
+
+      <button type="submit" class="primary-btn">Register</button>
+
+      <div *ngIf="error" class="error-message">{{ error }}</div>
+      <div *ngIf="success" class="success-message">{{ success }}</div>
+
+      <div class="switch-link">
+        <span>Already have an account?</span>
+        <a routerLink="/login">Login</a>
+      </div>
+    </form>
+  </div>
+</div>
